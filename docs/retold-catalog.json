@@ -1,76 +1,83 @@
 {
-	"Generated": "2026-04-10T17:22:48.550Z",
+	"Generated": "2026-05-22T05:41:05.997Z",
+	"Mode": "module",
 	"GitHubOrg": "stevenvelozo",
 	"DefaultBranch": "master",
-	"Groups": [
-		{
-			"Name": "Dist",
-			"Key": "dist",
-			"Description": "",
-			"Modules": [
-				{
-					"Name": "indoctrinate_content_staging",
-					"Repo": "indoctrinate_content_staging",
-					"Group": "dist",
-					"Branch": "master",
-					"HasDocs": false,
-					"HasCover": false,
-					"Sidebar": [],
-					"DocFiles": []
-				}
-			]
-		},
-		{
-			"Name": "Docs",
-			"Key": "docs",
-			"Description": "",
-			"Modules": [
-				{
-					"Name": "css",
-					"Repo": "css",
-					"Group": "docs",
-					"Branch": "master",
-					"HasDocs": true,
-					"HasCover": false,
-					"Sidebar": [],
-					"DocFiles": [
-						"css/docuserve.css"
-					]
-				},
-				{
-					"Name": "endpoints",
-					"Repo": "endpoints",
-					"Group": "docs",
-					"Branch": "master",
-					"HasDocs": true,
-					"HasCover": false,
-					"Sidebar": [],
-					"DocFiles": [
-						"endpoints/001-jpg-to-png.md",
-						"endpoints/002-png-to-jpg.md",
-						"endpoints/003-pdf-to-page-png.md",
-						"endpoints/004-pdf-to-page-jpg.md",
-						"endpoints/README.md"
-					]
-				}
-			]
-		},
-		{
-			"Name": "Source",
-			"Key": "source",
-			"Description": "",
-			"Modules": [
-				{
-					"Name": "endpoints",
-					"Repo": "endpoints",
-					"Group": "source",
-					"Branch": "master",
-					"HasDocs": false,
-					"HasCover": false,
-					"Sidebar": [],
-					"DocFiles": []
-				}
-			]
-		}
-	]
+	"Module": {
+		"Name": "orator-conversion",
+		"Repo": "orator-conversion",
+		"Group": "",
+		"Branch": "master",
+		"HasDocs": true,
+		"HasCover": true,
+		"Sidebar": [
+			{
+				"Title": "Getting Started",
+				"Children": [
+					{
+						"Title": "Introduction",
+						"Path": "README.md"
+					},
+					{
+						"Title": "Getting Started",
+						"Path": "getting-started.md"
+					}
+				]
+			},
+			{
+				"Title": "Reference",
+				"Children": [
+					{
+						"Title": "Configuration",
+						"Path": "configuration.md"
+					},
+					{
+						"Title": "API Reference",
+						"Path": "api-reference.md"
+					}
+				]
+			},
+			{
+				"Title": "Endpoints",
+				"Children": [
+					{
+						"Title": "JPG to PNG",
+						"Path": "endpoints/001-jpg-to-png.md"
+					},
+					{
+						"Title": "PNG to JPG",
+						"Path": "endpoints/002-png-to-jpg.md"
+					},
+					{
+						"Title": "PDF to Page PNG",
+						"Path": "endpoints/003-pdf-to-page-png.md"
+					},
+					{
+						"Title": "PDF to Page JPG",
+						"Path": "endpoints/004-pdf-to-page-jpg.md"
+					}
+				]
+			}
+		],
+		"DocFiles": [
+			".nojekyll",
+			"README.md",
+			"_brand.json",
+			"_cover.md",
+			"_sidebar.md",
+			"_version.json",
+			"api-reference.md",
+			"configuration.md",
+			"endpoints/001-jpg-to-png.md",
+			"endpoints/002-png-to-jpg.md",
+			"endpoints/003-pdf-to-page-png.md",
+			"endpoints/004-pdf-to-page-jpg.md",
+			"endpoints/README.md",
+			"getting-started.md",
+			"index.html",
+			"retold-catalog.json",
+			"retold-keyword-index.json"
+		]
+	},
+	"Groups": []
 }

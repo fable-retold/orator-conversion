@@ -1,7 +1,7 @@
 {
 	"Name": "orator-conversion",
-	"Version": "1.0.9",
+	"Version": "1.0.13",
 	"Description": "File format conversion endpoints for Orator service servers.",
-	"GeneratedAt": "2026-04-10T17:22:48.822Z",
-	"GitCommit": "bc72984"
+	"GeneratedAt": "2026-05-22T05:41:06.149Z",
+	"GitCommit": "224dcb7"
 }
