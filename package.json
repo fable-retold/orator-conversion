@@ -1,111 +1,111 @@
 {
-	"name": "orator-conversion",
-	"version": "1.0.14",
-	"description": "File format conversion endpoints for Orator service servers.",
-	"main": "source/Orator-File-Translation.js",
-	"scripts": {
-		"test": "npx quack test",
-		"coverage": "npx quack coverage",
-		"start": "node debug/Harness.js",
-		"tests": "npx quack test -g",
-		"docker-build": "docker build -t retold/orator-conversion:local .",
-		"docker-run": "docker run -p 8765:8765 --name orator-conversion retold/orator-conversion:local",
-		"docker-shell": "docker exec -it orator-conversion /bin/bash"
-	},
-	"mocha": {
-		"diff": true,
-		"extension": [
-			"js"
-		],
-		"package": "./package.json",
-		"reporter": "spec",
-		"slow": "75",
-		"timeout": "5000",
-		"ui": "tdd",
-		"watch-files": [
-			"source/**/*.js",
-			"test/**/*.js"
-		],
-		"watch-ignore": [
-			"lib/vendor"
-		]
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/fable-retold/orator-conversion.git"
-	},
-	"author": "steven velozo <steven@velozo.com>",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/fable-retold/orator-conversion/issues"
-	},
-	"homepage": "https://github.com/fable-retold/orator-conversion#readme",
-	"retoldBeacon": {
-		"displayName": "Orator Media Conversion",
-		"description": "Image/PDF/video/audio conversion actions exposed as an ultravisor-beacon capability.",
-		"category": "media",
-		"mode": "capability-provider",
-		"providerPath": "./source/Orator-Conversion-BeaconProvider.js",
-		"capability": "MediaConversion",
-		"healthCheck": {
-			"path": "/"
-		},
-		"defaultPort": 54500,
-		"requiresUltravisor": true,
-		"configForm": {
-			"Fields": [
-				{
-					"Name": "PdftkPath",
-					"Label": "pdftk binary",
-					"Type": "text",
-					"Default": "pdftk"
-				},
-				{
-					"Name": "PdftoppmPath",
-					"Label": "pdftoppm binary",
-					"Type": "text",
-					"Default": "pdftoppm"
-				},
-				{
-					"Name": "FfmpegPath",
-					"Label": "ffmpeg binary",
-					"Type": "text",
-					"Default": "ffmpeg"
-				},
-				{
-					"Name": "FfprobePath",
-					"Label": "ffprobe binary",
-					"Type": "text",
-					"Default": "ffprobe"
-				},
-				{
-					"Name": "MaxFileSizeBytes",
-					"Label": "Max input file size",
-					"Type": "number",
-					"Default": 104857600
-				}
-			]
-		},
-		"docker": {
-			"image": "retold-beacon-host-orator-conversion",
-			"dockerfile": "retold-beacon-host-orator-conversion.Dockerfile",
-			"dataMountPath": "/app/data",
-			"configMountPath": "/app/data/config.json",
-			"exposedPort": 54500,
-			"hostPackage": "retold-beacon-host"
-		}
-	},
-	"dependencies": {
-		"fable-serviceproviderbase": "^3.0.19",
-		"retold-sharp": "^1.0.0",
-		"ultravisor-beacon": "^0.0.15",
-		"ws": "^8.21.0"
-	},
-	"devDependencies": {
-		"fable": "^3.1.75",
-		"orator": "^6.1.2",
-		"orator-serviceserver-restify": "^2.0.11",
-		"pict-docuserve": "^1.4.4",
-		"quackage": "^1.3.0"
-	}
+  "name": "orator-conversion",
+  "version": "1.0.14",
+  "description": "File format conversion endpoints for Orator service servers.",
+  "main": "source/Orator-File-Translation.js",
+  "scripts": {
+    "test": "npx quack test",
+    "coverage": "npx quack coverage",
+    "start": "node debug/Harness.js",
+    "tests": "npx quack test -g",
+    "docker-build": "docker build -t retold/orator-conversion:local .",
+    "docker-run": "docker run -p 8765:8765 --name orator-conversion retold/orator-conversion:local",
+    "docker-shell": "docker exec -it orator-conversion /bin/bash"
+  },
+  "mocha": {
+    "diff": true,
+    "extension": [
+      "js"
+    ],
+    "package": "./package.json",
+    "reporter": "spec",
+    "slow": "75",
+    "timeout": "5000",
+    "ui": "tdd",
+    "watch-files": [
+      "source/**/*.js",
+      "test/**/*.js"
+    ],
+    "watch-ignore": [
+      "lib/vendor"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fable-retold/orator-conversion.git"
+  },
+  "author": "steven velozo <steven@velozo.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fable-retold/orator-conversion/issues"
+  },
+  "homepage": "https://github.com/fable-retold/orator-conversion#readme",
+  "retoldBeacon": {
+    "displayName": "Orator Media Conversion",
+    "description": "Image/PDF/video/audio conversion actions exposed as an ultravisor-beacon capability.",
+    "category": "media",
+    "mode": "capability-provider",
+    "providerPath": "./source/Orator-Conversion-BeaconProvider.js",
+    "capability": "MediaConversion",
+    "healthCheck": {
+      "path": "/"
+    },
+    "defaultPort": 54500,
+    "requiresUltravisor": true,
+    "configForm": {
+      "Fields": [
+        {
+          "Name": "PdftkPath",
+          "Label": "pdftk binary",
+          "Type": "text",
+          "Default": "pdftk"
+        },
+        {
+          "Name": "PdftoppmPath",
+          "Label": "pdftoppm binary",
+          "Type": "text",
+          "Default": "pdftoppm"
+        },
+        {
+          "Name": "FfmpegPath",
+          "Label": "ffmpeg binary",
+          "Type": "text",
+          "Default": "ffmpeg"
+        },
+        {
+          "Name": "FfprobePath",
+          "Label": "ffprobe binary",
+          "Type": "text",
+          "Default": "ffprobe"
+        },
+        {
+          "Name": "MaxFileSizeBytes",
+          "Label": "Max input file size",
+          "Type": "number",
+          "Default": 104857600
+        }
+      ]
+    },
+    "docker": {
+      "image": "retold-beacon-host-orator-conversion",
+      "dockerfile": "retold-beacon-host-orator-conversion.Dockerfile",
+      "dataMountPath": "/app/data",
+      "configMountPath": "/app/data/config.json",
+      "exposedPort": 54500,
+      "hostPackage": "retold-beacon-host"
+    }
+  },
+  "dependencies": {
+    "fable-serviceproviderbase": "^3.0.19",
+    "retold-sharp": "^1.0.0",
+    "ultravisor-beacon": "^1.0.5",
+    "ws": "^8.21.0"
+  },
+  "devDependencies": {
+    "fable": "^3.1.75",
+    "orator": "^6.1.2",
+    "orator-serviceserver-restify": "^2.0.11",
+    "pict-docuserve": "^1.4.4",
+    "quackage": "^1.3.0"
+  }
 }
