@@ -18,6 +18,7 @@ const libEndpointPdfPageToPng = require('./endpoints/Endpoint-Pdf-PageToPng.js')
 const libEndpointPdfPageToJpg = require('./endpoints/Endpoint-Pdf-PageToJpg.js');
 const libEndpointPdfPageToPngSized = require('./endpoints/Endpoint-Pdf-PageToPng-Sized.js');
 const libEndpointPdfPageToJpgSized = require('./endpoints/Endpoint-Pdf-PageToJpg-Sized.js');
+const libEndpointPdfFillForm = require('./endpoints/Endpoint-Pdf-FillForm.js');
 
 const _DEFAULT_ROUTE_PREFIX = '/conversion';
 const _DEFAULT_VERSION = '1.0';
@@ -105,6 +106,7 @@ class OratorFileTranslation extends libFableServiceProviderBase
 		this.fable.addServiceTypeIfNotExists('OratorFileTranslationEndpoint-PdfPageToJpg', libEndpointPdfPageToJpg);
 		this.fable.addServiceTypeIfNotExists('OratorFileTranslationEndpoint-PdfPageToPngSized', libEndpointPdfPageToPngSized);
 		this.fable.addServiceTypeIfNotExists('OratorFileTranslationEndpoint-PdfPageToJpgSized', libEndpointPdfPageToJpgSized);
+		this.fable.addServiceTypeIfNotExists('OratorFileTranslationEndpoint-PdfFillForm', libEndpointPdfFillForm);
 
 		let tmpEndpointOptions = { FileTranslation: this };
 
@@ -118,7 +120,8 @@ class OratorFileTranslation extends libFableServiceProviderBase
 				'OratorFileTranslationEndpoint-PdfPageToPng',
 				'OratorFileTranslationEndpoint-PdfPageToJpg',
 				'OratorFileTranslationEndpoint-PdfPageToPngSized',
-				'OratorFileTranslationEndpoint-PdfPageToJpgSized'
+				'OratorFileTranslationEndpoint-PdfPageToJpgSized',
+				'OratorFileTranslationEndpoint-PdfFillForm'
 			];
 
 		for (let i = 0; i < tmpEndpointTypes.length; i++)

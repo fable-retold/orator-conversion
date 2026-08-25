@@ -276,13 +276,13 @@ suite
 						let tmpOrator = tmpFable.serviceManager.instantiateServiceProvider('Orator', {});
 						let tmpFileTranslation = tmpFable.serviceManager.instantiateServiceProvider('OratorFileTranslation', {});
 
-						// Should have 9 default converters (jpg-to-png, png-to-jpg, resize, rotate, convert, pdf-to-page-png, pdf-to-page-jpg, pdf-to-page-png sized, pdf-to-page-jpg sized)
-						Expect(Object.keys(tmpFileTranslation.converters).length).to.equal(9);
+						// Should have 10 default converters (jpg-to-png, png-to-jpg, resize, rotate, convert, pdf-to-page-png, pdf-to-page-jpg, pdf-to-page-png sized, pdf-to-page-jpg sized, pdf/fill-form)
+						Expect(Object.keys(tmpFileTranslation.converters).length).to.equal(10);
 
 						tmpFileTranslation.addConverter('document/txt-to-html', (pInput, pReq, fCb) => { fCb(null, pInput, 'text/html'); });
 
-						// Should now have 10
-						Expect(Object.keys(tmpFileTranslation.converters).length).to.equal(10);
+						// Should now have 11
+						Expect(Object.keys(tmpFileTranslation.converters).length).to.equal(11);
 
 						return fDone();
 					}

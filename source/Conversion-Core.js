@@ -540,6 +540,144 @@ class ConversionCore
 	}
 
 	// ================================================================
+	// PDF Form Filling (AcroForm)
+	// ================================================================
+
+	/**
+	 * Fill an AcroForm PDF's fields, preserving the document as-is.
+	 *
+	 * Loads the template, sets each field's value (dispatching on the field kind auto-detected from
+	 * the loaded form), regenerates appearance streams, and saves. Uses pdf-lib's load->save path,
+	 * which PRESERVES the structure tree (/StructTreeRoot, /MarkInfo, /Metadata, /ViewerPreferences)
+	 * and the template's calculation actions (/AA, /CO) and embedded JavaScript — i.e. it fills "as
+	 * if a user did it in Acrobat" without stripping, normalizing, or flattening anything.
+	 *
+	 * pdf-lib is required lazily so the image/video/audio capabilities keep working where pdf-lib
+	 * is not installed.
+	 *
+	 * @param {Buffer} pTemplateBuffer - The template AcroForm PDF.
+	 * @param {object} pValueMap - Flat map of { pdfFieldName: rawValue }. Field kind is auto-detected.
+	 * @param {object} [pOptions] - Fill options.
+	 * @param {boolean} [pOptions.UpdateFieldAppearances=true] - Regenerate field appearance streams on save.
+	 * @param {boolean} [pOptions.IgnoreEncryption=true] - Load encrypted templates (output is decrypted).
+	 * @param {boolean} [pOptions.NeedAppearances=false] - Set /NeedAppearances so viewers regenerate appearances.
+	 * @param {*} [pOptions.ParseSpeed] - Optional pdf-lib ParseSpeeds value.
+	 * @param {Function} fCallback - Called with (pError, pOutputBuffer, pContentType, pStats).
+	 *   pStats: { Filled, MissingFields, Errors: [{ Field, Message }] }.
+	 */
+	fillAcroForm(pTemplateBuffer, pValueMap, pOptions, fCallback)
+	{
+		let tmpOptions = pOptions || {};
+		let tmpValueMap = pValueMap || {};
+		let tmpStats = { Filled: 0, MissingFields: 0, Errors: [] };
+
+		let libPDFLib;
+		try
+		{
+			libPDFLib = require('pdf-lib');
+		}
+		catch (pRequireError)
+		{
+			return fCallback(new Error(`pdf-lib is required for fillAcroForm but could not be loaded: ${pRequireError.message}`));
+		}
+
+		if (!Buffer.isBuffer(pTemplateBuffer) && !(pTemplateBuffer instanceof Uint8Array))
+		{
+			return fCallback(new Error('fillAcroForm requires a template PDF Buffer.'));
+		}
+
+		let tmpLoadOptions =
+		{
+			ignoreEncryption: (tmpOptions.IgnoreEncryption !== false),
+			updateMetadata:   false
+		};
+		if (tmpOptions.ParseSpeed) { tmpLoadOptions.parseSpeed = tmpOptions.ParseSpeed; }
+
+		if (this.LogLevel > 1)
+		{
+			this._log(`ConversionCore: filling AcroForm with ${Object.keys(tmpValueMap).length} value(s).`);
+		}
+
+		libPDFLib.PDFDocument.load(pTemplateBuffer, tmpLoadOptions)
+			.then(
+				(pDocument) =>
+				{
+					let tmpForm = pDocument.getForm();
+
+					// Build a name -> field lookup once.
+					let tmpFieldByName = {};
+					let tmpFields = tmpForm.getFields();
+					for (let i = 0; i < tmpFields.length; i++)
+					{
+						let tmpName = '';
+						try { tmpName = tmpFields[i].getName(); }
+						catch (pNameError) { tmpName = ''; }
+						if (tmpName) { tmpFieldByName[tmpName] = tmpFields[i]; }
+					}
+
+					let tmpNames = Object.keys(tmpValueMap);
+					for (let i = 0; i < tmpNames.length; i++)
+					{
+						let tmpFieldName = tmpNames[i];
+						let tmpField = tmpFieldByName[tmpFieldName];
+						if (!tmpField)
+						{
+							tmpStats.MissingFields++;
+							continue;
+						}
+
+						let tmpRawValue = tmpValueMap[tmpFieldName];
+						let tmpKind = (tmpField.constructor && tmpField.constructor.name) || '';
+						let tmpStringValue = (tmpRawValue === undefined || tmpRawValue === null) ? '' : String(tmpRawValue);
+						try
+						{
+							if (tmpKind === 'PDFCheckBox')
+							{
+								let tmpTruthy = tmpRawValue === true
+									|| tmpStringValue === '1'
+									|| /^(true|yes|on|checked)$/i.test(tmpStringValue);
+								if (tmpTruthy) { tmpField.check(); } else { tmpField.uncheck(); }
+							}
+							else if (tmpKind === 'PDFDropdown' || tmpKind === 'PDFOptionList' || tmpKind === 'PDFRadioGroup')
+							{
+								tmpField.select(tmpStringValue);
+							}
+							else
+							{
+								// PDFTextField, PDFSignature, anything else — coerce to string.
+								tmpField.setText(tmpStringValue);
+							}
+							tmpStats.Filled++;
+						}
+						catch (pFieldError)
+						{
+							tmpStats.Errors.push({ Field: tmpFieldName, Message: pFieldError.message || String(pFieldError) });
+						}
+					}
+
+					if (tmpOptions.NeedAppearances === true)
+					{
+						// Ask viewers to (re)generate appearances. We still regenerate below by default,
+						// so this is a belt-and-suspenders fallback for viewers that honor the flag.
+						try { tmpForm.acroForm.dict.set(libPDFLib.PDFName.of('NeedAppearances'), libPDFLib.PDFBool.True); }
+						catch (pNeedAppError) { /* non-fatal */ }
+					}
+
+					return pDocument.save({ updateFieldAppearances: (tmpOptions.UpdateFieldAppearances !== false) });
+				})
+			.then(
+				(pOutputBytes) =>
+				{
+					return fCallback(null, Buffer.from(pOutputBytes), 'application/pdf', tmpStats);
+				})
+			.catch(
+				(pError) =>
+				{
+					return fCallback(new Error(`AcroForm fill failed: ${pError.message || pError}`));
+				});
+	}
+
+	// ================================================================
 	// Tool Availability Checks
 	// ================================================================
 
